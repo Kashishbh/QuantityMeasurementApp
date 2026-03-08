@@ -1,12 +1,13 @@
 package com.feet_measurement_equality;
 
 import java.util.Objects;
+
 public class LengthQuantity {
     private static final double EPSILON = 1e-6;
     private final double value;
     private final LengthUnit unit;
-    public LengthQuantity(double value,LengthUnit unit) {
-        if (unit == null)
+    public LengthQuantity(double value, LengthUnit unit) {
+        if (unit==null)
             throw new IllegalArgumentException("Unit cannot be null");
         if (!Double.isFinite(value))
             throw new IllegalArgumentException("Value must be finite");
@@ -19,68 +20,58 @@ public class LengthQuantity {
     public LengthUnit getUnit() {
         return unit;
     }
-    // Convert current object to feet (base unit)
-    public double toFeet() {
-        return unit.toFeet(value);
+    // Convert current value to base unit (feet)
+    public double toBaseUnit() {
+        return unit.convertToBaseUnit(value);
     }
-    //  Instance method conversion (UC5)
+    // UC5 Conversion
     public LengthQuantity convertTo(LengthUnit targetUnit) {
         if (targetUnit==null)
             throw new IllegalArgumentException("Target unit cannot be null");
-        double valueInFeet=this.toFeet();
-        double convertedValue=targetUnit.fromFeet(valueInFeet);
-        return new LengthQuantity(convertedValue, targetUnit);
+        double baseValue=this.toBaseUnit();
+        double converted=targetUnit.convertFromBaseUnit(baseValue);
+        return new LengthQuantity(converted, targetUnit);
     }
+    // Static conversion 
     public static double convert(double value, LengthUnit source, LengthUnit target) {
-
-        if (source==null||target==null)
+        if (source==null || target==null)
             throw new IllegalArgumentException("Units cannot be null");
         if (!Double.isFinite(value))
             throw new IllegalArgumentException("Value must be finite");
-        double valueInFeet=source.toFeet(value);
-        return target.fromFeet(valueInFeet);
+        double baseValue=source.convertToBaseUnit(value);
+        return target.convertFromBaseUnit(baseValue);
     }
- // UC6: Add two length quantities
+    // UC6 Addition
     public LengthQuantity add(LengthQuantity other) {
-
-        if (other == null) {
+        if (other==null)
             throw new IllegalArgumentException("Second operand cannot be null");
-        }
-
-        // Step 1: Convert both quantities to base unit (feet)
-        double thisFeet = this.toFeet();
-        double otherFeet = other.toFeet();
-
-        // Step 2: Add them
-        double sumFeet = thisFeet + otherFeet;
-
-        // Step 3: Convert result back to unit of first operand
-        double resultValue = this.unit.fromFeet(sumFeet);
-
-        // Step 4: Return new Quantity object
+        double thisBase=this.toBaseUnit();
+        double otherBase=other.toBaseUnit();
+        double sum=thisBase+otherBase;
+        double resultValue=this.unit.convertFromBaseUnit(sum);
         return new LengthQuantity(resultValue, this.unit);
-    }//UC 7 Target Unit AdditionS
+    }
+    // UC7 Addition with Target Unit
     public LengthQuantity add(LengthQuantity other, LengthUnit targetUnit) {
-        if (other==null||targetUnit==null) {
-            throw new IllegalArgumentException("Operands or target unit cannot be null");
-        }
-        double thisFeet=this.unit.toFeet(this.value);
-        double otherFeet=other.unit.toFeet(other.value);
-        double sumFeet=thisFeet+otherFeet;
-        double resultValue=targetUnit.fromFeet(sumFeet);
+        if (other==null||targetUnit==null)
+            throw new IllegalArgumentException("Operand or target unit cannot be null");
+        double thisBase=this.toBaseUnit();
+        double otherBase=other.toBaseUnit();
+        double sum=thisBase+otherBase;
+        double resultValue=targetUnit.convertFromBaseUnit(sum);
         return new LengthQuantity(resultValue,targetUnit);
     }
-    // Improved equality using epsilon
+    // Equality check using epsilon
     @Override
     public boolean equals(Object obj) {
-        if (this==obj)return true;
+        if (this== obj) return true;
         if (!(obj instanceof LengthQuantity)) return false;
-        LengthQuantity other=(LengthQuantity)obj;
-        return Math.abs(this.toFeet()-other.toFeet())<EPSILON;
+        LengthQuantity other=(LengthQuantity) obj;
+        return Math.abs(this.toBaseUnit()-other.toBaseUnit())<EPSILON;
     }
     @Override
     public int hashCode() {
-        return Objects.hash(Math.round(toFeet()/EPSILON));
+        return Objects.hash(Math.round(toBaseUnit()/EPSILON));
     }
     @Override
     public String toString() {

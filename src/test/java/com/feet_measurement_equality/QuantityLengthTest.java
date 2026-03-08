@@ -125,4 +125,15 @@ public class QuantityLengthTest {
         LengthQuantity result=q1.add(q2,LengthUnit.FEET);
         assertEquals(new LengthQuantity(2.0,LengthUnit.FEET),result);
     }
+    @Test
+    void testUnitConversion_ToBaseUnit() {
+        double result = LengthUnit.INCH.convertToBaseUnit(12.0);
+        assertEquals(1.0, result, EPSILON);
+    }
+
+    @Test
+    void testUnitConversion_FromBaseUnit() {
+        double result = LengthUnit.INCH.convertFromBaseUnit(1.0);
+        assertEquals(12.0, result, EPSILON);
+    }
 }
