@@ -98,4 +98,24 @@ public class QuantityLengthTest {
             LengthQuantity.convert(Double.NaN, LengthUnit.FEET, LengthUnit.INCH);
         });
     }
+    @Test
+    void testAddFeetAndInch() {
+        LengthQuantity q1=new LengthQuantity(1.0, LengthUnit.FEET);
+        LengthQuantity q2=new LengthQuantity(12.0, LengthUnit.INCH);
+        LengthQuantity result=q1.add(q2);
+        assertEquals(new LengthQuantity(2.0, LengthUnit.FEET), result);
+    }
+    @Test
+    void testFeetEquality() {
+        LengthQuantity q1=new LengthQuantity(1.0, LengthUnit.FEET);
+        LengthQuantity q2=new LengthQuantity(1.0, LengthUnit.FEET);
+        assertEquals(q1,q2);
+    }
+    @Test
+    void testAddYardAndFeet() {
+        LengthQuantity q1=new LengthQuantity(1.0, LengthUnit.YARD);
+        LengthQuantity q2=new LengthQuantity(3.0, LengthUnit.FEET);
+        LengthQuantity result=q1.add(q2);
+        assertEquals(new LengthQuantity(2.0, LengthUnit.YARD), result);
+    }
 }

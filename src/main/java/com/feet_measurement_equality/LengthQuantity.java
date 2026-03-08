@@ -40,6 +40,26 @@ public class LengthQuantity {
         double valueInFeet=source.toFeet(value);
         return target.fromFeet(valueInFeet);
     }
+ // UC6: Add two length quantities
+    public LengthQuantity add(LengthQuantity other) {
+
+        if (other == null) {
+            throw new IllegalArgumentException("Second operand cannot be null");
+        }
+
+        // Step 1: Convert both quantities to base unit (feet)
+        double thisFeet = this.toFeet();
+        double otherFeet = other.toFeet();
+
+        // Step 2: Add them
+        double sumFeet = thisFeet + otherFeet;
+
+        // Step 3: Convert result back to unit of first operand
+        double resultValue = this.unit.fromFeet(sumFeet);
+
+        // Step 4: Return new Quantity object
+        return new LengthQuantity(resultValue, this.unit);
+    }
     // Improved equality using epsilon
     @Override
     public boolean equals(Object obj) {
