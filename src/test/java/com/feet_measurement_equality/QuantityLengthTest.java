@@ -118,4 +118,11 @@ public class QuantityLengthTest {
         LengthQuantity result=q1.add(q2);
         assertEquals(new LengthQuantity(2.0, LengthUnit.YARD), result);
     }
+    @Test
+    void testAdditionTargetFeet() {
+        LengthQuantity q1=new LengthQuantity(1.0,LengthUnit.FEET);
+        LengthQuantity q2=new LengthQuantity(12.0,LengthUnit.INCH);
+        LengthQuantity result=q1.add(q2,LengthUnit.FEET);
+        assertEquals(new LengthQuantity(2.0,LengthUnit.FEET),result);
+    }
 }

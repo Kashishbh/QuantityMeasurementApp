@@ -32,5 +32,15 @@ public class QuantityMeasurementApp {
         LengthQuantity q8=new LengthQuantity(3.0, LengthUnit.FEET);
         LengthQuantity result3=q7.add(q8);
         System.out.println(q7+ " + "+q8+" = "+result3);
+        
+     // UC7 Add with target unit
+        LengthQuantity a=new LengthQuantity(1.0, LengthUnit.FEET);
+        LengthQuantity b=new LengthQuantity(12.0, LengthUnit.INCH);
+        LengthQuantity r1=a.add(b, LengthUnit.FEET);
+        System.out.println("Result in FEET = "+r1);
+        LengthQuantity r2=a.add(b, LengthUnit.INCH);
+        System.out.println("Result in INCH = "+r2);
+        LengthQuantity r3=a.add(b, LengthUnit.YARD);
+        System.out.println("Result in YARD = "+r3);
     }
 }
