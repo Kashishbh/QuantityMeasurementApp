@@ -59,15 +59,14 @@ public class LengthQuantity {
 
         // Step 4: Return new Quantity object
         return new LengthQuantity(resultValue, this.unit);
-    }
-    //UC7 Target Unit Addition
+    }//UC 7 Target Unit AdditionS
     public LengthQuantity add(LengthQuantity other, LengthUnit targetUnit) {
         if (other==null||targetUnit==null) {
-            throw new IllegalArgumentException("target unit cannot be null");
+            throw new IllegalArgumentException("Operands or target unit cannot be null");
         }
         double thisFeet=this.unit.toFeet(this.value);
         double otherFeet=other.unit.toFeet(other.value);
-        double sumFeet=thisFeet + otherFeet;
+        double sumFeet=thisFeet+otherFeet;
         double resultValue=targetUnit.fromFeet(sumFeet);
         return new LengthQuantity(resultValue,targetUnit);
     }
