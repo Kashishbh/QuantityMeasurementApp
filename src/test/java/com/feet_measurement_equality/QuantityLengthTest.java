@@ -127,13 +127,34 @@ public class QuantityLengthTest {
     }
     @Test
     void testUnitConversion_ToBaseUnit() {
-        double result = LengthUnit.INCH.convertToBaseUnit(12.0);
+        double result=LengthUnit.INCH.convertToBaseUnit(12.0);
         assertEquals(1.0, result, EPSILON);
     }
 
     @Test
     void testUnitConversion_FromBaseUnit() {
-        double result = LengthUnit.INCH.convertFromBaseUnit(1.0);
+        double result=LengthUnit.INCH.convertFromBaseUnit(1.0);
         assertEquals(12.0, result, EPSILON);
+    }
+    
+    @Test
+    void testEquality_KgToGram(){
+        QuantityWeight q1=new QuantityWeight(1.0, WeightUnit.KILOGRAM);
+        QuantityWeight q2=new QuantityWeight(1000.0, WeightUnit.GRAM);
+        assertTrue(q1.equals(q2));
+    }
+
+    @Test
+    void testConversion_KgToPound(){
+        QuantityWeight q=new QuantityWeight(1.0, WeightUnit.KILOGRAM);
+        QuantityWeight result=q.convertTo(WeightUnit.POUND);
+        assertEquals(2.20462,result.convertTo(WeightUnit.POUND).convertTo(WeightUnit.POUND).convertTo(WeightUnit.POUND).getValue(), 1e-2);
+    }
+    @Test
+    void testAddition_KgAndGram(){
+        QuantityWeight q1=new QuantityWeight(1.0,WeightUnit.KILOGRAM);
+        QuantityWeight q2=new QuantityWeight(1000.0,WeightUnit.GRAM);
+        QuantityWeight result=q1.add(q2);
+        assertEquals(new QuantityWeight(2.0,WeightUnit.KILOGRAM), result);
     }
 }

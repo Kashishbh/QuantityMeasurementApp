@@ -33,7 +33,7 @@ public class QuantityMeasurementApp {
         LengthQuantity result3=q7.add(q8);
         System.out.println(q7+ " + "+q8+" = "+result3);
         
-     // UC7 Add with target unit
+        // UC7 Add with target unit
         LengthQuantity a=new LengthQuantity(1.0, LengthUnit.FEET);
         LengthQuantity b=new LengthQuantity(12.0, LengthUnit.INCH);
         LengthQuantity r1=a.add(b, LengthUnit.FEET);
@@ -42,5 +42,21 @@ public class QuantityMeasurementApp {
         System.out.println("Result in INCH = "+r2);
         LengthQuantity r3=a.add(b, LengthUnit.YARD);
         System.out.println("Result in YARD = "+r3);
+        //UC 9
+        QuantityWeight w1 = new QuantityWeight(1.0, WeightUnit.KILOGRAM);
+        QuantityWeight w2 = new QuantityWeight(1000.0, WeightUnit.GRAM);
+        // Equality check
+        System.out.println("Weight equal? " + w1.equals(w2)); // true
+        // Conversion
+        QuantityWeight wInPounds = w1.convertTo(WeightUnit.POUND);
+        System.out.println("1 kg in pounds: " + wInPounds);
+        // Addition (implicit target unit = first operand's unit)
+        QuantityWeight sum1 = w1.add(w2);
+        System.out.println("Sum (implicit target): " + sum1); // 2.0 KILOGRAM
+        // Addition (explicit target unit)
+        QuantityWeight sum2 = w1.add(w2, WeightUnit.GRAM);
+        System.out.println("Sum (explicit target GRAM): " + sum2); // 2000.0 GRAM
+        // Cross-category comparison (length vs weight)
+        System.out.println("Length equals Weight? " + q1.equals(w1));
     }
 }
