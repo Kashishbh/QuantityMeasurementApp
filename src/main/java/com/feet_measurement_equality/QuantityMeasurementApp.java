@@ -37,5 +37,17 @@ public class QuantityMeasurementApp {
         // Addition (explicit unit)
         Quantity<VolumeUnit>sum2=volume1.add(volume3,VolumeUnit.MILLILITRE);
         System.out.println("1 L + 1 Gallon in mL: "+sum2);
+        
+        Quantity<LengthUnit> length1=new Quantity<>(10.0,LengthUnit.FEET);
+        Quantity<LengthUnit> length2=new Quantity<>(6.0,LengthUnit.INCHES);
+        System.out.println("Subtraction:");
+        System.out.println(length1.subtract(length2));
+        System.out.println(length1.subtract(length2,LengthUnit.INCHES));
+        System.out.println("Division:");
+        System.out.println(length1.divide(new Quantity<>(2.0,LengthUnit.FEET)));
+        Quantity<VolumeUnit> v1=new Quantity<>(5.0, VolumeUnit.LITRE);
+        Quantity<VolumeUnit> v2=new Quantity<>(500.0, VolumeUnit.MILLILITRE);
+        System.out.println(v1.subtract(v2));
+        System.out.println(v1.divide(new Quantity<>(1.0, VolumeUnit.LITRE)));
     }
 }

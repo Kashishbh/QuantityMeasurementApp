@@ -60,9 +60,13 @@ public class Quantity<U extends IMeasurable> {
             throw new IllegalArgumentException("Invalid value");
     }
     private double performBaseArithmetic(Quantity<U> other, ArithmeticOperation operation) {
-        double baseThis=this.toBaseUnit();
-        double baseOther=other.toBaseUnit();
-        return operation.compute(baseThis,baseOther);
+
+        unit.validateOperationSupport(operation.name());
+
+        double baseThis = this.toBaseUnit();
+        double baseOther = other.toBaseUnit();
+
+        return operation.compute(baseThis, baseOther);
     }
     public Quantity<U> add(Quantity<U> other) {
         validateArithmeticOperands(other, null, false);
