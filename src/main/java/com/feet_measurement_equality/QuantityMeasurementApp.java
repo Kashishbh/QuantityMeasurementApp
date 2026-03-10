@@ -22,5 +22,20 @@ public class QuantityMeasurementApp {
         demonstrateEquality(w1,w2);
         demonstrateConversion(w1,WeightUnit.GRAM);
         demonstrateAddition(w1,w2,WeightUnit.KILOGRAM);
+        
+        Quantity<VolumeUnit>volume1=new Quantity<>(1.0, VolumeUnit.LITRE);
+        Quantity<VolumeUnit>volume2=new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+        Quantity<VolumeUnit>volume3=new Quantity<>(1.0, VolumeUnit.GALLON);
+        // Equality
+        System.out.println("1 L == 1000 mL: "+volume1.equals(volume2));
+        // Conversion
+        Quantity<VolumeUnit> converted=volume1.convertTo(VolumeUnit.MILLILITRE);
+        System.out.println("1 L in mL: "+converted);
+        // Addition (implicit unit)
+        Quantity<VolumeUnit>sum1=volume1.add(volume2);
+        System.out.println("1 L + 1000 mL: "+sum1);
+        // Addition (explicit unit)
+        Quantity<VolumeUnit>sum2=volume1.add(volume3,VolumeUnit.MILLILITRE);
+        System.out.println("1 L + 1 Gallon in mL: "+sum2);
     }
 }
