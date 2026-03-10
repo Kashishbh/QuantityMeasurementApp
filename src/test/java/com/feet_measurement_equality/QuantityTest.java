@@ -44,4 +44,18 @@ public class QuantityTest {
 	    Quantity<VolumeUnit> result = v1.add(v2);
 	    assertEquals(2.0, result.getValue(), 0.001);
 	}
+	@Test
+	void testSubtraction_SameUnit() {
+	    Quantity<VolumeUnit>q1=new Quantity<>(5.0,VolumeUnit.LITRE);
+	    Quantity<VolumeUnit>q2=new Quantity<>(2.0,VolumeUnit.LITRE);
+	    Quantity<VolumeUnit>result=q1.subtract(q2);
+	    assertEquals(3.0, result.getValue(),0.001);
+	}
+	@Test
+	void testDivision_SameUnit() {
+	    Quantity<VolumeUnit>q1=new Quantity<>(10.0, VolumeUnit.LITRE);
+	    Quantity<VolumeUnit>q2=new Quantity<>(5.0, VolumeUnit.LITRE);
+	    double result=q1.divide(q2);
+	    assertEquals(2.0,result,0.001);
+	}
 }
