@@ -1,14 +1,13 @@
 package com.feet_measurement_equality;
+
 public interface IMeasurable {
     double getConversionFactor();                
     double convertToBaseUnit(double value);      
     double convertFromBaseUnit(double baseValue); 
     String getUnitName();   
-    SupportsArithmetic supportsArithmetic = () -> true;
     default boolean supportsArithmetic() {
-        return supportsArithmetic.isSupported();
+        return true;
     }
     default void validateOperationSupport(String operation) {
-      
     }
 }

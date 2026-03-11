@@ -58,4 +58,25 @@ public class QuantityTest {
 	    double result=q1.divide(q2);
 	    assertEquals(2.0,result,0.001);
 	}
+	@Test
+	public void shouldConvertCelsiusToFahrenheit() {
+	    Quantity<TemperatureUnit> temp=new Quantity<>(0,TemperatureUnit.CELSIUS);
+	    Quantity<TemperatureUnit> result=temp.convertTo(TemperatureUnit.FAHRENHEIT);
+	    assertEquals(new Quantity<>(32,TemperatureUnit.FAHRENHEIT),result);
+	}
+	@Test
+	public void shouldConvertFahrenheitToCelsius() {
+	    Quantity<TemperatureUnit> temp=new Quantity<>(32, TemperatureUnit.FAHRENHEIT);
+	    Quantity<TemperatureUnit> result=temp.convertTo(TemperatureUnit.CELSIUS);
+	    assertEquals(new Quantity<>(0, TemperatureUnit.CELSIUS),result);
+	}
+	@Test
+	public void shouldThrowExceptionWhenAddingTemperature() {
+	    Quantity<TemperatureUnit> t1=new Quantity<>(10, TemperatureUnit.CELSIUS);
+	    Quantity<TemperatureUnit> t2=new Quantity<>(20, TemperatureUnit.CELSIUS);
+	    assertThrows(UnsupportedOperationException.class,()->{
+	        t1.add(t2);
+	    });
+	}
+	
 }
