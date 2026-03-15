@@ -23,7 +23,14 @@ public class QuantityMeasurementController {
     }
 
     public double performDivision(QuantityDTO q1, QuantityDTO q2) {
-        return service.divide(q1,q2);
+    	try {
+            double result = service.divide(q1, q2);
+            System.out.println("Division Result: " + result);
+        } 
+        catch (RuntimeException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+		return 0;
     }
     public QuantityDTO performConversion(QuantityDTO source, String targetUnit) {
         return service.convert(source, targetUnit);

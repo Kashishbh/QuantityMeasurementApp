@@ -29,11 +29,11 @@ public class QuantityMeasurementAppTest {
     @Test
     void testQuantityDTOCreation() {
 
-        QuantityDTO dto = new QuantityDTO(10,"FEET","LENGTH");
+        QuantityDTO dto = new QuantityDTO(10, "FEET", "LENGTH");
 
-        assertEquals(10,dto.getValue());
-        assertEquals("FEET",dto.getUnit());
-        assertEquals("LENGTH",dto.getMeasurementType());
+        assertEquals(10.0, dto.getValue());
+        assertEquals("FEET", dto.getUnit());
+        assertEquals("LENGTH", dto.getMeasurementType());
     }
 
     // Service Layer Tests
@@ -41,54 +41,54 @@ public class QuantityMeasurementAppTest {
     @Test
     void testServiceCompareEqualitySameUnit() {
 
-        QuantityDTO q1 = new QuantityDTO(10,"FEET","LENGTH");
-        QuantityDTO q2 = new QuantityDTO(10,"FEET","LENGTH");
+        QuantityDTO q1 = new QuantityDTO(10, "FEET", "LENGTH");
+        QuantityDTO q2 = new QuantityDTO(10, "FEET", "LENGTH");
 
-        assertTrue(service.compare(q1,q2));
+        assertTrue(service.compare(q1, q2));
     }
 
     @Test
     void testServiceAddition() {
 
-        QuantityDTO q1 = new QuantityDTO(5,"FEET","LENGTH");
-        QuantityDTO q2 = new QuantityDTO(5,"FEET","LENGTH");
+        QuantityDTO q1 = new QuantityDTO(5, "FEET", "LENGTH");
+        QuantityDTO q2 = new QuantityDTO(5, "FEET", "LENGTH");
 
-        QuantityDTO result = service.add(q1,q2);
+        QuantityDTO result = service.add(q1, q2);
 
-        assertEquals(10,result.getValue());
-        assertEquals("FEET",result.getUnit());
+        assertEquals(10.0, result.getValue());
+        assertEquals("FEET", result.getUnit());
     }
 
     @Test
     void testServiceSubtraction() {
 
-        QuantityDTO q1 = new QuantityDTO(10,"FEET","LENGTH");
-        QuantityDTO q2 = new QuantityDTO(5,"FEET","LENGTH");
+        QuantityDTO q1 = new QuantityDTO(10, "FEET", "LENGTH");
+        QuantityDTO q2 = new QuantityDTO(5, "FEET", "LENGTH");
 
-        QuantityDTO result = service.subtract(q1,q2);
+        QuantityDTO result = service.subtract(q1, q2);
 
-        assertEquals(5,result.getValue());
+        assertEquals(5.0, result.getValue());
     }
 
     @Test
     void testServiceDivision() {
 
-        QuantityDTO q1 = new QuantityDTO(10,"FEET","LENGTH");
-        QuantityDTO q2 = new QuantityDTO(2,"FEET","LENGTH");
+        QuantityDTO q1 = new QuantityDTO(10, "FEET", "LENGTH");
+        QuantityDTO q2 = new QuantityDTO(2, "FEET", "LENGTH");
 
-        double result = service.divide(q1,q2);
+        double result = service.divide(q1, q2);
 
-        assertEquals(5,result);
+        assertEquals(5.0, result);
     }
 
     @Test
     void testServiceDivisionByZero() {
 
-        QuantityDTO q1 = new QuantityDTO(10,"FEET","LENGTH");
-        QuantityDTO q2 = new QuantityDTO(0,"FEET","LENGTH");
+        QuantityDTO q1 = new QuantityDTO(10, "FEET", "LENGTH");
+        QuantityDTO q2 = new QuantityDTO(0, "FEET", "LENGTH");
 
         assertThrows(RuntimeException.class,
-                () -> service.divide(q1,q2));
+                () -> service.divide(q1, q2));
     }
 
     // Controller Layer Tests
@@ -96,30 +96,30 @@ public class QuantityMeasurementAppTest {
     @Test
     void testControllerCompareOperation() {
 
-        QuantityDTO q1 = new QuantityDTO(10,"FEET","LENGTH");
-        QuantityDTO q2 = new QuantityDTO(10,"FEET","LENGTH");
+        QuantityDTO q1 = new QuantityDTO(10, "FEET", "LENGTH");
+        QuantityDTO q2 = new QuantityDTO(10, "FEET", "LENGTH");
 
         assertDoesNotThrow(() ->
-                controller.performComparison(q1,q2));
+                controller.performComparison(q1, q2));
     }
 
     @Test
     void testControllerAdditionOperation() {
 
-        QuantityDTO q1 = new QuantityDTO(5,"FEET","LENGTH");
-        QuantityDTO q2 = new QuantityDTO(5,"FEET","LENGTH");
+        QuantityDTO q1 = new QuantityDTO(5, "FEET", "LENGTH");
+        QuantityDTO q2 = new QuantityDTO(5, "FEET", "LENGTH");
 
         assertDoesNotThrow(() ->
-                controller.performAddition(q1,q2));
+                controller.performAddition(q1, q2));
     }
 
     @Test
     void testControllerConversionOperation() {
 
-        QuantityDTO q1 = new QuantityDTO(1,"FEET","LENGTH");
+        QuantityDTO q1 = new QuantityDTO(1, "FEET", "LENGTH");
 
         assertDoesNotThrow(() ->
-                controller.performConversion(q1,"INCH"));
+                controller.performConversion(q1, "INCH"));
     }
 
     // Integration Test
@@ -127,11 +127,11 @@ public class QuantityMeasurementAppTest {
     @Test
     void testIntegrationEndToEndAddition() {
 
-        QuantityDTO q1 = new QuantityDTO(10,"FEET","LENGTH");
-        QuantityDTO q2 = new QuantityDTO(20,"FEET","LENGTH");
+        QuantityDTO q1 = new QuantityDTO(10, "FEET", "LENGTH");
+        QuantityDTO q2 = new QuantityDTO(20, "FEET", "LENGTH");
 
-        QuantityDTO result = service.add(q1,q2);
+        QuantityDTO result = service.add(q1, q2);
 
-        assertEquals(30,result.getValue());
+        assertEquals(30.0, result.getValue());
     }
 }

@@ -1,4 +1,4 @@
-package com.feet_measurement_equality;
+package com.feet_measurement_equality.unit;
 
 public interface IMeasurable {
     double getConversionFactor();                

@@ -1,4 +1,4 @@
-package com.feet_measurement_equality;
+package com.feet_measurement_equality.unit;
 
 import java.util.function.Function;
 public enum TemperatureUnit implements IMeasurable {

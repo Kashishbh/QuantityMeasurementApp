@@ -1,4 +1,4 @@
-package com.feet_measurement_equality;
+package com.feet_measurement_equality.unit;
 
 import java.util.Objects;
 public class Quantity<U extends IMeasurable> {
