@@ -1,8 +1,9 @@
 package com.app.quantitymeasurement.controller;
 
 import java.util.*;
-import com.app.quantitymeasurement.entity.QuantityMeasurementEntity;
+
 import com.app.quantitymeasurement.dto.QuantityInputDTO;
+import com.app.quantitymeasurement.model.QuantityMeasurementEntity;
 import com.app.quantitymeasurement.service.QuantityMeasurementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,52 +16,73 @@ public class QuantityMeasurementController {
     @Autowired
     private QuantityMeasurementService service;
 
+    // ===== COMPARE =====
     @PostMapping("/compare")
-    public boolean compare(@RequestBody QuantityInputDTO input) {
-        return service.compare(
+    public ResponseEntity<?> compare(@RequestBody QuantityInputDTO input) {
+        boolean result = service.compare(
                 input.getThisQuantityDTO().getValue(),
                 input.getThisQuantityDTO().getUnit(),
                 input.getThatQuantityDTO().getValue(),
                 input.getThatQuantityDTO().getUnit(),
                 input.getMeasurementType()
         );
+        return ResponseEntity.ok(result);
     }
 
+    // ===== ADD =====
     @PostMapping("/add")
-    public double add(@RequestBody QuantityInputDTO input) {
-        return service.add(
+    public ResponseEntity<?> add(@RequestBody QuantityInputDTO input) {
+        double result = service.add(
                 input.getThisQuantityDTO().getValue(),
                 input.getThisQuantityDTO().getUnit(),
                 input.getThatQuantityDTO().getValue(),
                 input.getThatQuantityDTO().getUnit(),
                 input.getMeasurementType()
         );
+        return ResponseEntity.ok(result);
     }
 
+    // ===== SUBTRACT =====
     @PostMapping("/subtract")
-    public double subtract(@RequestBody QuantityInputDTO input) {
-        return service.subtract(
+    public ResponseEntity<?> subtract(@RequestBody QuantityInputDTO input) {
+        double result = service.subtract(
                 input.getThisQuantityDTO().getValue(),
                 input.getThisQuantityDTO().getUnit(),
                 input.getThatQuantityDTO().getValue(),
                 input.getThatQuantityDTO().getUnit(),
                 input.getMeasurementType()
         );
+        return ResponseEntity.ok(result);
+    }
+    
+    @PostMapping("/multiply")
+    public ResponseEntity<Double> multiply(@RequestBody QuantityInputDTO input) {
+        double result = service.multiply(
+                input.getThisQuantityDTO().getValue(),
+                input.getThisQuantityDTO().getUnit(),
+                input.getThatQuantityDTO().getValue(),
+                input.getThatQuantityDTO().getUnit(),
+                input.getMeasurementType()
+        );
+        return ResponseEntity.ok(result);
     }
 
+    // ===== DIVIDE =====
     @PostMapping("/divide")
-    public double divide(@RequestBody QuantityInputDTO input) {
-        return service.divide(
+    public ResponseEntity<?> divide(@RequestBody QuantityInputDTO input) {
+        double result = service.divide(
                 input.getThisQuantityDTO().getValue(),
                 input.getThisQuantityDTO().getUnit(),
                 input.getThatQuantityDTO().getValue(),
                 input.getThatQuantityDTO().getUnit(),
                 input.getMeasurementType()
         );
+        return ResponseEntity.ok(result);
     }
 
+    // ===== CONVERT =====
     @PostMapping("/convert")
-    public ResponseEntity<Double> convert(
+    public ResponseEntity<?> convert(
             @RequestParam double value,
             @RequestParam String fromUnit,
             @RequestParam String toUnit,
@@ -68,15 +90,17 @@ public class QuantityMeasurementController {
 
         double result = service.convert(value, fromUnit, toUnit, measurementType);
         return ResponseEntity.ok(result);
-    } 
+    }
 
+    // ===== HISTORY =====
     @GetMapping("/history/{operation}")
-    public List<QuantityMeasurementEntity> getHistory(@PathVariable String operation) {
-        return service.getHistoryByOperation(operation);
-    }    
+    public ResponseEntity<?> getHistory(@PathVariable String operation) {
+        return ResponseEntity.ok(service.getHistoryByOperation(operation));
+    }
 
+    // ===== COUNT =====
     @GetMapping("/count/{operation}")
-    public long getCount(@PathVariable String operation) {
-        return service.getOperationCount(operation);
+    public ResponseEntity<?> getCount(@PathVariable String operation) {
+        return ResponseEntity.ok(service.getOperationCount(operation));
     }
 }

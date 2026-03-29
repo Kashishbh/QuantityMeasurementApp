@@ -2,19 +2,14 @@ package com.app.quantitymeasurement.dto;
 
 public class QuantityInputDTO {
 
-    private String measurementType; // LENGTH, VOLUME, WEIGHT, TEMPERATURE
     private QuantityDTO thisQuantityDTO;
     private QuantityDTO thatQuantityDTO;
+    private String measurementType;
 
-    // Getters and Setters
-    public String getMeasurementType() {
-        return measurementType;
-    }
+    // Default constructor
+    public QuantityInputDTO() {}
 
-    public void setMeasurementType(String measurementType) {
-        this.measurementType = measurementType;
-    }
-
+    // Getters & Setters
     public QuantityDTO getThisQuantityDTO() {
         return thisQuantityDTO;
     }
@@ -29,5 +24,13 @@ public class QuantityInputDTO {
 
     public void setThatQuantityDTO(QuantityDTO thatQuantityDTO) {
         this.thatQuantityDTO = thatQuantityDTO;
+    }
+
+    public String getMeasurementType() {
+        return measurementType;
+    }
+
+    public void setMeasurementType(String measurementType) {
+        this.measurementType = measurementType;
     }
 }

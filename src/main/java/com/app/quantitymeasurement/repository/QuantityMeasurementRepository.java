@@ -1,11 +1,16 @@
 package com.app.quantitymeasurement.repository;
-import java.util.*;
-import com.app.quantitymeasurement.entity.QuantityMeasurementEntity;
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface QuantityMeasurementRepository
-        extends JpaRepository<QuantityMeasurementEntity, Integer> {
-	List<QuantityMeasurementEntity> findByOperation(String operation);
+import com.app.quantitymeasurement.model.QuantityMeasurementEntity;
+import com.app.quantitymeasurement.model.OperationType; // ✅ ADD THIS
 
-    long countByOperation(String operation);
+public interface QuantityMeasurementRepository
+        extends JpaRepository<QuantityMeasurementEntity, Long> {
+
+    List<QuantityMeasurementEntity> findByOperation(OperationType operation);
+
+    long countByOperation(OperationType operation);
 }

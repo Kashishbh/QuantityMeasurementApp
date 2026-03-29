@@ -1,8 +1,12 @@
 package com.app.quantitymeasurement.service;
 
 import java.util.*;
-import com.app.quantitymeasurement.entity.QuantityMeasurementEntity;
+
+import com.app.quantitymeasurement.model.QuantityMeasurementEntity;
+import com.app.quantitymeasurement.model.OperationType;
 import com.app.quantitymeasurement.repository.QuantityMeasurementRepository;
+import com.app.quantitymeasurement.exception.QuantityMeasurementException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +23,7 @@ public class QuantityMeasurementService {
             case "FEET": return value * 12;
             case "YARD": return value * 36;
             case "METER": return value * 39.37;
-            default: throw new RuntimeException("Invalid Length Unit");
+            default: throw new QuantityMeasurementException("Invalid Length Unit");
         }
     }
 
@@ -29,17 +33,17 @@ public class QuantityMeasurementService {
             case "FEET": return value / 12;
             case "YARD": return value / 36;
             case "METER": return value / 39.37;
-            default: throw new RuntimeException("Invalid Length Unit");
+            default: throw new QuantityMeasurementException("Invalid Length Unit");
         }
     }
 
-    // ===== VOLUME BASE UNIT = LITRE =====
+    // ===== VOLUME =====
     private double toLitre(double value, String unit) {
         switch(unit.toUpperCase()) {
             case "LITRE": return value;
             case "MILLILITRE": return value * 0.001;
             case "GALLON": return value * 3.78541;
-            default: throw new RuntimeException("Invalid Volume Unit");
+            default: throw new QuantityMeasurementException("Invalid Volume Unit");
         }
     }
 
@@ -48,17 +52,17 @@ public class QuantityMeasurementService {
             case "LITRE": return value;
             case "MILLILITRE": return value / 0.001;
             case "GALLON": return value / 3.78541;
-            default: throw new RuntimeException("Invalid Volume Unit");
+            default: throw new QuantityMeasurementException("Invalid Volume Unit");
         }
     }
 
-    // ===== WEIGHT BASE UNIT = KILOGRAM =====
+    // ===== WEIGHT =====
     private double toKilogram(double value, String unit) {
         switch(unit.toUpperCase()) {
             case "KILOGRAM": return value;
             case "GRAM": return value * 0.001;
             case "POUND": return value * 0.453592;
-            default: throw new RuntimeException("Invalid Weight Unit");
+            default: throw new QuantityMeasurementException("Invalid Weight Unit");
         }
     }
 
@@ -67,16 +71,16 @@ public class QuantityMeasurementService {
             case "KILOGRAM": return value;
             case "GRAM": return value / 0.001;
             case "POUND": return value / 0.453592;
-            default: throw new RuntimeException("Invalid Weight Unit");
+            default: throw new QuantityMeasurementException("Invalid Weight Unit");
         }
     }
 
-    // ===== TEMPERATURE BASE UNIT = CELSIUS =====
+    // ===== TEMPERATURE =====
     private double toCelsius(double value, String unit) {
         switch(unit.toUpperCase()) {
             case "CELSIUS": return value;
             case "FAHRENHEIT": return (value - 32) * 5/9;
-            default: throw new RuntimeException("Invalid Temperature Unit");
+            default: throw new QuantityMeasurementException("Invalid Temperature Unit");
         }
     }
 
@@ -84,36 +88,38 @@ public class QuantityMeasurementService {
         switch(unit.toUpperCase()) {
             case "CELSIUS": return value;
             case "FAHRENHEIT": return (value * 9/5) + 32;
-            default: throw new RuntimeException("Invalid Temperature Unit");
+            default: throw new QuantityMeasurementException("Invalid Temperature Unit");
         }
     }
 
     // ===== COMPARE =====
     public boolean compare(double v1, String u1, double v2, String u2, String measurementType) {
+
         double val1, val2;
+
         switch(measurementType.toUpperCase()) {
             case "LENGTH": val1 = toInch(v1, u1); val2 = toInch(v2, u2); break;
             case "VOLUME": val1 = toLitre(v1, u1); val2 = toLitre(v2, u2); break;
             case "WEIGHT": val1 = toKilogram(v1, u1); val2 = toKilogram(v2, u2); break;
             case "TEMPERATURE": val1 = toCelsius(v1, u1); val2 = toCelsius(v2, u2); break;
-            default: throw new RuntimeException("Unknown Measurement Type");
+            default: throw new QuantityMeasurementException("Unknown Measurement Type");
         }
 
         boolean result = Math.abs(val1 - val2) < 0.0001;
 
         repo.save(new QuantityMeasurementEntity(
-            v1, u1,
-            v2, u2,
-            "COMPARE",
-            result ? 1 : 0,
-            ""
+                v1, u1, v2, u2,
+                OperationType.COMPARE,
+                result ? 1 : 0,
+                ""
         ));
 
         return result;
     }
 
-    // ===== ADDITION =====
+    // ===== ADD =====
     public double add(double v1, String u1, double v2, String u2, String measurementType) {
+
         double val1, val2, sum;
         String resultUnit = u1;
 
@@ -131,24 +137,24 @@ public class QuantityMeasurementService {
                 sum = fromKilogram(val1 + val2, u1);
                 break;
             case "TEMPERATURE":
-                throw new RuntimeException("Addition not supported for Temperature");
+                throw new QuantityMeasurementException("Addition not supported for Temperature");
             default:
-                throw new RuntimeException("Unsupported Measurement Type for Add");
+                throw new QuantityMeasurementException("Unsupported Measurement Type for Add");
         }
 
         repo.save(new QuantityMeasurementEntity(
-            v1, u1,
-            v2, u2,
-            "ADD",
-            sum,
-            resultUnit
+                v1, u1, v2, u2,
+                OperationType.ADD,
+                sum,
+                resultUnit
         ));
 
         return sum;
     }
 
-    // ===== SUBTRACTION =====
+    // ===== SUBTRACT =====
     public double subtract(double v1, String u1, double v2, String u2, String measurementType) {
+
         double val1, val2, diff;
         String resultUnit = u1;
 
@@ -166,44 +172,86 @@ public class QuantityMeasurementService {
                 diff = fromKilogram(val1 - val2, u1);
                 break;
             case "TEMPERATURE":
-                throw new RuntimeException("Subtraction not supported for Temperature");
+                throw new QuantityMeasurementException("Subtraction not supported for Temperature");
             default:
-                throw new RuntimeException("Unsupported Measurement Type for Subtract");
+                throw new QuantityMeasurementException("Unsupported Measurement Type for Subtract");
         }
 
         repo.save(new QuantityMeasurementEntity(
-            v1, u1,
-            v2, u2,
-            "SUBTRACT",
-            diff,
-            resultUnit
+                v1, u1, v2, u2,
+                OperationType.SUBTRACT,
+                diff,
+                resultUnit
         ));
 
         return diff;
     }
+    
+    public double multiply(double v1, String u1, double v2, String u2, String measurementType) {
+
+        double val1, val2, result;
+
+        switch(measurementType.toUpperCase()) {
+            case "LENGTH":
+                val1 = toInch(v1, u1);
+                val2 = toInch(v2, u2);
+                break;
+
+            case "VOLUME":
+                val1 = toLitre(v1, u1);
+                val2 = toLitre(v2, u2);
+                break;
+
+            case "WEIGHT":
+                val1 = toKilogram(v1, u1);
+                val2 = toKilogram(v2, u2);
+                break;
+
+            case "TEMPERATURE":
+                throw new QuantityMeasurementException("Multiplication not supported for Temperature");
+
+            default:
+                throw new QuantityMeasurementException("Unsupported Measurement Type for Multiply");
+        }
+
+        result = val1 * val2;
+
+        repo.save(new QuantityMeasurementEntity(
+                v1, u1,
+                v2, u2,
+                OperationType.MULTIPLY,
+                result,
+                ""
+        ));
+
+        return result;
+    }
+    
 
     // ===== DIVIDE =====
     public double divide(double v1, String u1, double v2, String u2, String measurementType) {
+
         double val1, val2, result;
-        String resultUnit = "";
 
         switch(measurementType.toUpperCase()) {
             case "LENGTH": val1 = toInch(v1, u1); val2 = toInch(v2, u2); break;
             case "VOLUME": val1 = toLitre(v1, u1); val2 = toLitre(v2, u2); break;
             case "WEIGHT": val1 = toKilogram(v1, u1); val2 = toKilogram(v2, u2); break;
-            case "TEMPERATURE": throw new RuntimeException("Division not supported for Temperature");
-            default: throw new RuntimeException("Unsupported Measurement Type for Divide");
+            case "TEMPERATURE":
+                throw new QuantityMeasurementException("Division not supported for Temperature");
+            default:
+                throw new QuantityMeasurementException("Unsupported Measurement Type for Divide");
         }
 
-        if(val2 == 0) throw new ArithmeticException("Divide by zero");
+        if(val2 == 0) throw new QuantityMeasurementException("Divide by zero");
+
         result = val1 / val2;
 
         repo.save(new QuantityMeasurementEntity(
-            v1, u1,
-            v2, u2,
-            "DIVIDE",
-            result,
-            resultUnit
+                v1, u1, v2, u2,
+                OperationType.DIVIDE,
+                result,
+                ""
         ));
 
         return result;
@@ -211,6 +259,7 @@ public class QuantityMeasurementService {
 
     // ===== CONVERT =====
     public double convert(double v, String from, String to, String measurementType) {
+
         double base, result;
 
         switch(measurementType.toUpperCase()) {
@@ -218,15 +267,14 @@ public class QuantityMeasurementService {
             case "VOLUME": base = toLitre(v, from); result = fromLitre(base, to); break;
             case "WEIGHT": base = toKilogram(v, from); result = fromKilogram(base, to); break;
             case "TEMPERATURE": base = toCelsius(v, from); result = fromCelsius(base, to); break;
-            default: throw new RuntimeException("Unknown Measurement Type");
+            default: throw new QuantityMeasurementException("Unknown Measurement Type");
         }
 
         repo.save(new QuantityMeasurementEntity(
-            v, from,
-            0, "",
-            "CONVERT",
-            result,
-            to
+                v, from, 0, "",
+                OperationType.CONVERT,
+                result,
+                to
         ));
 
         return result;
@@ -234,11 +282,10 @@ public class QuantityMeasurementService {
 
     // ===== HISTORY =====
     public List<QuantityMeasurementEntity> getHistoryByOperation(String operation) {
-        return repo.findByOperation(operation);
+        return repo.findByOperation(OperationType.valueOf(operation.toUpperCase()));
     }
 
-    // ===== COUNT =====
     public long getOperationCount(String operation) {
-        return repo.countByOperation(operation);
+        return repo.countByOperation(OperationType.valueOf(operation.toUpperCase()));
     }
 }
