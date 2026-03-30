@@ -8,6 +8,7 @@ import java.util.*;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Custom Exception
     @ExceptionHandler(QuantityMeasurementException.class)
     public ResponseEntity<Map<String, Object>> handleCustomException(QuantityMeasurementException ex) {
 
@@ -20,6 +21,34 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    // Bad Credentials
+    @ExceptionHandler(org.springframework.security.authentication.BadCredentialsException.class)
+    public ResponseEntity<?> handleBadCredentials(Exception ex) {
+        return ResponseEntity.status(401).body(Map.of(
+                "error", "Invalid email or password"
+        ));
+    }
+
+    // Access Denied
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ResponseEntity<?> handleAccessDenied(Exception ex) {
+        return ResponseEntity.status(403).body(Map.of(
+                "error", "Access Denied"
+        ));
+    }
+ // User Exception ab  is service ke change batao
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<Map<String, Object>> handleUserException(UserException ex) {
+
+        Map<String, Object> error = new HashMap<>();
+        error.put("timestamp", LocalDateTime.now());
+        error.put("status", 400);
+        error.put("error", "User Error");
+        error.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+    // Global Exception (ONLY ONE)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGlobal(Exception ex) {
 
