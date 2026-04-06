@@ -1,5 +1,5 @@
 package com.app.quantitymeasurement.controller;
-
+import com.app.quantitymeasurement.dto.RegisterDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,16 +22,15 @@ public class AuthController {
 
     // ===== REGISTER =====
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
+    public ResponseEntity<?> register(@RequestBody RegisterDTO dto) {
 
-        User savedUser = service.register(user);
+        User savedUser = service.register(dto);
 
         return ResponseEntity.ok(Map.of(
                 "message", "User registered successfully",
                 "email", savedUser.getEmail()
         ));
     }
-
     // ===== LOGIN =====
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO request) {
