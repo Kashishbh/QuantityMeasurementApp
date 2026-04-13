@@ -4,9 +4,15 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-# Env files
-**/.env
-**/*.env
+# Environment files — never push these
+.env
+*.env
+
+# Logs
+*.log
+
+# Spring Boot
+spring.log
 
 ### STS ###
 .apt_generated
