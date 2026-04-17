@@ -5,10 +5,18 @@ spring:
   application:
     name: user-service
 
+  # datasource (local) — comment hi rehne do
+  # datasource:
+  #   url: ${DB_URL:jdbc:mysql://localhost:3306/userdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+  #   username: ${DB_USERNAME:root}
+  #   password: ${DB_PASSWORD:password}
+  #   driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # ✅ Railway DB (active)
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/userdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:password}
+    url: jdbc:mysql://monorail.proxy.rlwy.net:23313/railway?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: yEQwYmJsYTegHunUdbgAxxjDnOihNWxS
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
