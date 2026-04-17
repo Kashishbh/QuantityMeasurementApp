@@ -51,6 +51,11 @@ public class SecurityConfig {
                 .requestMatchers("/api/users/*/history").permitAll()
                 .requestMatchers("/api/users/me").permitAll()
                 .requestMatchers("/api/users/my-history").permitAll()
+                .requestMatchers(
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/auth/**"
+                    ).permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth -> oauth
