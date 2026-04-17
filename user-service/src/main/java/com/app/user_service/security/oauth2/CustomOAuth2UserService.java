@@ -39,7 +39,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             User user = new User();
             user.setEmail(email);
 
-            // ✅ null safe name
+            // null safe name
             String name = oAuth2User.getAttribute("name");
             user.setName(name != null ? name : email);
 
