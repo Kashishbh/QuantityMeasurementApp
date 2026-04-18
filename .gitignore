@@ -39,6 +39,12 @@ build/
 # Logs
 **/*.log
 
+**/*.iml
+**/.settings/
+**/.classpath
+**/.project
+**/node_modules/
+**/.angular/
 # OS files
 .DS_Store
 Thumbs.db
