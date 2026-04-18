@@ -1,31 +1,47 @@
 server:
-  port: ${PORT:8081}
+  port: ${PORT:8082}
 
 spring:
   application:
-    name: measurement-service
+    name: user-service
+#  Local DB (commented)
+# datasource:
+#   url: ${DB_URL:jdbc:mysql://localhost:3306/measurement_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+#   username: ${DB_USERNAME:root}
+#   password: ${DB_PASSWORD:password}
+#   driver-class-name: com.mysql.cj.jdbc.Driver
 
-  #  Local DB (commented)
-  # datasource:
-  #   url: ${DB_URL:jdbc:mysql://localhost:3306/measurement_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
-  #   username: ${DB_USERNAME:root}
-  #   password: ${DB_PASSWORD:password}
-  #   driver-class-name: com.mysql.cj.jdbc.Driver
-
-  #  Railway DB (active via ENV)
+#  Railway DB (active via ENV)
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: ${DB_URL:jdbc:mysql://localhost:3306/userdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
     show-sql: false
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email
+            redirect-uri: ${OAUTH_REDIRECT_URI:http://localhost:8082/login/oauth2/code/google}
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://www.googleapis.com/oauth2/v4/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: email
 
 springdoc:
   api-docs:
@@ -42,5 +58,3 @@ eureka:
     register-with-eureka: true
   instance:
     prefer-ip-address: true
-    lease-renewal-interval-in-seconds: 10
-    lease-expiration-duration-in-seconds: 30
