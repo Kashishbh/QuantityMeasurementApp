@@ -7,31 +7,24 @@ spring:
 
   cloud:
     gateway:
-
-      # Enable service discovery with lowercase support
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-
       routes:
         - id: measurement-route
-          uri: lb://measurement-service
+          uri: lb://MEASUREMENT-SERVICE
           predicates:
             - Path=/api/v1/quantities,/api/v1/quantities/**
 
         - id: auth-route
-          uri: lb://user-service
+          uri: lb://USER-SERVICE
           predicates:
             - Path=/auth/**
 
         - id: oauth2-route
-          uri: lb://user-service
+          uri: lb://USER-SERVICE
           predicates:
             - Path=/oauth2/**,/login/**
 
         - id: user-route
-          uri: lb://user-service
+          uri: lb://USER-SERVICE
           predicates:
             - Path=/api/users,/api/users/**
 
